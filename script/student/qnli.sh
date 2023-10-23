@@ -1,0 +1,12 @@
+python3 main_glue_distill.py --distill_loss kd+sinkhorn \
+							--do_lower_case \
+							--do_train \
+							--task_name qnli \
+							--teacher_path $TEACHER_PATH \
+							--student_path $STUDENT_PATH \
+							--per_gpu_batch_size 16 \
+							--num_train_epochs 6 \
+							--learning_rate 3.5e-6 \
+							--alpha 0.8 \
+							--temperature 3.0 \
+							--beta 0.8

@@ -1,0 +1,12 @@
+python3 main_glue_distill.py --distill_loss kd_anneal+sinkhorn \
+							--do_lower_case \
+							--do_train \
+							--task_name mrpc \
+							--teacher_path $TEACHER_PATH \
+							--student_path $STUDENT_PATH \
+							--per_gpu_batch_size 16 \
+							--num_train_epochs 3 \
+							--learning_rate 3e-5 \
+							--alpha 1 \
+							--temperature 4  \
+							--beta 0.8
