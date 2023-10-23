@@ -24,11 +24,11 @@ To install the environment, run:
 
 To perform **Task-specific Teacher Model Finetuning**, run:
 
-`python3 T0/distillation_t.py     --dataset_name super_glue     --dataset_config_name DATASET_NAME     --template_name "TEMPLATE_NAME"     --model_name_or_path MODEL_DIR     --output_dir ./debug --parallelize `
+`python3 T0/distillation_t.py     --dataset_name super_glue     --dataset_config_name DATASET_NAME     --template_name "TEMPLATE_NAME"     --model_name_or_path MODEL_DIR     --output_dir ./debug    --parallelize `
 
 To perform **Task-specific Student Model Distillation**, run:
 
-`python3 T0/distillation.py     --dataset_name super_glue     --dataset_config_name DATASET_NAME     --template_name "TEMPLATE_NAME"     --model_name_or_path MODEL_DIR     --output_dir ./debug --parallelize `
+`python3 T0/distillation.py     --dataset_name super_glue     --dataset_config_name DATASET_NAME     --template_name "TEMPLATE_NAME"     --model_name_or_path MODEL_DIR     --output_dir ./debug    --parallelize `
 
 ## Task-specific GPT Model Distillation
 To install the environment, run:
@@ -37,11 +37,11 @@ To install the environment, run:
 
 To perform **Task-specific Teacher Model Finetuning**, run:
 
-`python3 GPT-Neo/distillation_t.py     --dataset_name super_glue     --dataset_config_name DATASET_NAME     --template_name "TEMPLATE_NAME"     --model_name_or_path MODEL_DIR     --output_dir ./debug --parallelize `
+`python3 GPT-Neo/distillation_t.py     --dataset_name super_glue     --dataset_config_name DATASET_NAME     --template_name "TEMPLATE_NAME"     --model_name_or_path MODEL_DIR     --output_dir ./debug    --parallelize `
 
 To perform **Task-specific Student Model Distillation**, run:
 
-`python3 GPT-Neo/distillation.py     --dataset_name super_glue     --dataset_config_name DATASET_NAME     --template_name "TEMPLATE_NAME"     --model_name_or_path MODEL_DIR     --output_dir ./debug --parallelize `
+`python3 GPT-Neo/distillation.py     --dataset_name super_glue     --dataset_config_name DATASET_NAME     --template_name "TEMPLATE_NAME"     --model_name_or_path MODEL_DIR     --output_dir ./debug    --parallelize `
 
 ## Student Checkpoints
 The distilled student model for each task reported in the paper can be downloaded using the following link:
