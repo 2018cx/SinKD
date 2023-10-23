@@ -33,93 +33,93 @@ class DistillKL_anneal(nn.Module):
         return loss
     
     
-# class saliency_mse(nn.Module):
-#     def __init__(self, T):
-#         super(saliency_mse, self).__init__()
-#         self.T = T
-#     def js_divergence(self,p, q):
-#         m = 0.5 * (p + q)
-#         return 0.5 * (F.kl_div(p, m, reduction='batchmean') +
-#                     F.kl_div(q, m, reduction='batchmean'))
-#     def forward(self, y_s, y_t, mode="classification"):
-#         temperature = self.T
-#         if mode == "regression":
-#             loss = F.mse_loss((y_s/temperature).view(-1), (y_t/temperature).view(-1))
-#         else:
-#             p_s = F.softmax(y_s/temperature, dim=-1)
-#             p_t = F.softmax(y_t/temperature, dim=-1)
-#             loss = (0.5 * self.js_divergence(p_s, p_t)).mean()
-#         return 0.1 * loss
+class DistillJS(nn.Module):
+    def __init__(self, T):
+        super(saliency_mse, self).__init__()
+        self.T = T
+    def js_divergence(self,p, q):
+        m = 0.5 * (p + q)
+        return 0.5 * (F.kl_div(p, m, reduction='batchmean') +
+                    F.kl_div(q, m, reduction='batchmean'))
+    def forward(self, y_s, y_t, mode="classification"):
+        temperature = self.T
+        if mode == "regression":
+            loss = F.mse_loss((y_s/temperature).view(-1), (y_t/temperature).view(-1))
+        else:
+            p_s = F.softmax(y_s/temperature, dim=-1)
+            p_t = F.softmax(y_t/temperature, dim=-1)
+            loss = (0.5 * self.js_divergence(p_s, p_t)).mean()
+        return 0.1 * loss
 
-# class saliency_mse(nn.Module):
-#     def __init__(self, T):
-#         super(saliency_mse, self).__init__()
-#         self.T = T
-#     def tvd_loss(self,p, q):
-#         return 0.5 * (p - q).abs().mean()
-#     def forward(self,  y_s, y_t, mode="classification"):
-#         temperature = self.T
-#         if mode == "regression":
+class DistillTVD(nn.Module):
+    def __init__(self, T):
+        super(saliency_mse, self).__init__()
+        self.T = T
+    def tvd_loss(self,p, q):
+        return 0.5 * (p - q).abs().mean()
+    def forward(self,  y_s, y_t, mode="classification"):
+        temperature = self.T
+        if mode == "regression":
             
-#             loss = F.mse_loss((y_s/temperature).view(-1), (y_t/temperature).view(-1))
-#         else:
-#             p_s = F.softmax(y_s/temperature, dim=-1)
-#             p_t = F.softmax(y_t/temperature, dim=-1)
-#         loss = self.tvd_loss(p_s,p_t)
-#         return 0.1*loss
+            loss = F.mse_loss((y_s/temperature).view(-1), (y_t/temperature).view(-1))
+        else:
+            p_s = F.softmax(y_s/temperature, dim=-1)
+            p_t = F.softmax(y_t/temperature, dim=-1)
+        loss = self.tvd_loss(p_s,p_t)
+        return 0.1*loss
     
-# class saliency_mse(nn.Module):
-#     def __init__(self, T):
-#         super(saliency_mse, self).__init__()
-#         self.T = T
-#     def forward(self,  y_s, y_t, mode="classification"):
-#         temperature = self.T
-#         if mode == "regression":
+class saliency_mse(nn.Module):
+    def __init__(self, T):
+        super(saliency_mse, self).__init__()
+        self.T = T
+    def forward(self,  y_s, y_t, mode="classification"):
+        temperature = self.T
+        if mode == "regression":
             
-#             loss = F.mse_loss((y_s/temperature).view(-1), (y_t/temperature).view(-1))
-#         else:
-#             p_s = F.softmax(y_s/temperature, dim=-1)
-#             p_s1 = F.log_softmax(y_s/temperature, dim=-1)
-#             p_t = F.log_softmax(y_t/temperature, dim=-1)
-#             loss =torch.sum(p_s1 * p_s, dim=-1).mean() -torch.sum(p_t * p_s, dim=-1).mean()
-#         return 1*loss
+            loss = F.mse_loss((y_s/temperature).view(-1), (y_t/temperature).view(-1))
+        else:
+            p_s = F.softmax(y_s/temperature, dim=-1)
+            p_s1 = F.log_softmax(y_s/temperature, dim=-1)
+            p_t = F.log_softmax(y_t/temperature, dim=-1)
+            loss =torch.sum(p_s1 * p_s, dim=-1).mean() -torch.sum(p_t * p_s, dim=-1).mean()
+        return 1*loss
 
 
 # 1-step IG for binary classification / regression task
 # for binary classification task, the two views of attribution maps are same according to the computation, so we simply use one of them
-# class saliency_mse(nn.Module):
-#     def __init__(self, top_k, norm, loss_func):
-#         super(saliency_mse, self).__init__()
-#         self.top_k = top_k
-#         self.norm = norm
-#         self.loss_func = loss_func
-
-#     def forward(self, s_loss, t_loss, s_hidden, t_hidden):
-#         t_grad = torch.autograd.grad(t_loss, [t_hidden[0]], create_graph=False)
-#         t_input_grad = t_grad[0] # (bsz, max_len, hidden_dim)
-#         t_saliency = t_input_grad * t_hidden[0].detach()   
-#         t_topk_saliency = torch.topk(torch.abs(t_saliency),self.top_k,dim=-1)[0] # (bsz, max_len, top_k)
-#         t_saliency = torch.norm(t_topk_saliency,dim=-1) # (bsz, max_len)
-#         t_saliency = F.normalize(t_saliency, p=self.norm, dim=1)
-
-#         s_grad = torch.autograd.grad(s_loss, [s_hidden[0]], create_graph=True, retain_graph=True)
-#         s_input_grad = s_grad[0] # (bsz, max_len, hidden_dim)
-#         s_saliency = s_input_grad * s_hidden[0]
-#         s_saliency = torch.norm(s_saliency,dim=-1) # (bsz, max_len)
-#         s_saliency = F.normalize(s_saliency, p=self.norm, dim=1)
-
-#         if self.loss_func == "L1":
-#             return F.l1_loss(t_saliency, s_saliency, reduction='sum') / (t_saliency!=0).sum()
-#         elif self.loss_func == "L2":
-#             return F.mse_loss(t_saliency, s_saliency, reduction='sum') / (t_saliency!=0).sum()
-#         elif self.loss_func =='smoothL1':
-#             return F.smooth_l1_loss(t_saliency, s_saliency, reduction='sum') / (t_saliency!=0).sum()
-
-
 class saliency_mse(nn.Module):
-    def __init__(self, T):
+    def __init__(self, top_k, norm, loss_func):
         super(saliency_mse, self).__init__()
-        self.T = 2   #0.55 #2
+        self.top_k = top_k
+        self.norm = norm
+        self.loss_func = loss_func
+
+    def forward(self, s_loss, t_loss, s_hidden, t_hidden):
+        t_grad = torch.autograd.grad(t_loss, [t_hidden[0]], create_graph=False)
+        t_input_grad = t_grad[0] # (bsz, max_len, hidden_dim)
+        t_saliency = t_input_grad * t_hidden[0].detach()   
+        t_topk_saliency = torch.topk(torch.abs(t_saliency),self.top_k,dim=-1)[0] # (bsz, max_len, top_k)
+        t_saliency = torch.norm(t_topk_saliency,dim=-1) # (bsz, max_len)
+        t_saliency = F.normalize(t_saliency, p=self.norm, dim=1)
+
+        s_grad = torch.autograd.grad(s_loss, [s_hidden[0]], create_graph=True, retain_graph=True)
+        s_input_grad = s_grad[0] # (bsz, max_len, hidden_dim)
+        s_saliency = s_input_grad * s_hidden[0]
+        s_saliency = torch.norm(s_saliency,dim=-1) # (bsz, max_len)
+        s_saliency = F.normalize(s_saliency, p=self.norm, dim=1)
+
+        if self.loss_func == "L1":
+            return F.l1_loss(t_saliency, s_saliency, reduction='sum') / (t_saliency!=0).sum()
+        elif self.loss_func == "L2":
+            return F.mse_loss(t_saliency, s_saliency, reduction='sum') / (t_saliency!=0).sum()
+        elif self.loss_func =='smoothL1':
+            return F.smooth_l1_loss(t_saliency, s_saliency, reduction='sum') / (t_saliency!=0).sum()
+
+
+class Sinkhorn(nn.Module):
+    def __init__(self, T):
+        super(Sinkhorn, self).__init__()
+        self.T = 2   
     def sinkhorn_normalized(self,x, n_iters=10):
         for _ in range(n_iters):
             x = x / torch.sum(x, dim=1, keepdim=True)
@@ -132,19 +132,37 @@ class saliency_mse(nn.Module):
         P = self.sinkhorn_normalized(K, n_iters)  # 计算 Sinkhorn 迭代的结果
         return torch.sum(P * Wxy)  # 计算近似 EMD 损失
     def forward(self, y_s, y_t, mode="classification"):
-        # batch_size = y_s.size(0)
-        # p_s = F.softmax(y_s, dim=-1)
-        # p_t = F.softmax(y_t, dim=-1)
-        
-        # emd_loss = 0.0
-        # for i in range(batch_size):
-        #     emd_loss += self.sinkhorn_loss(x=p_s[i:i+1],y=p_t[i:i+1]) 
-        # return 0.001 * emd_loss 
         softmax = nn.Softmax(dim=1)
         p_s = softmax(y_s/self.T)
         p_t = softmax(y_t/self.T)
-        emd_loss = 0.0008*self.sinkhorn_loss(x=p_s,y=p_t)*20/8    #  8
+        emd_loss = 0.001*self.sinkhorn_loss(x=p_s,y=p_t)
         return emd_loss
+
+
+class Sinkhorn_sample(nn.Module):
+    def __init__(self, T):
+        super(Sinkhorn_sample, self).__init__()
+        self.T = 2 
+    def sinkhorn_normalized(self,x, n_iters=10):
+        for _ in range(n_iters):
+            x = x / torch.sum(x, dim=1, keepdim=True)
+            x = x / torch.sum(x, dim=0, keepdim=True)
+        return x
+
+    def sinkhorn_loss(self,x, y, epsilon=0.1, n_iters=20):
+        Wxy = torch.cdist(x, y, p=1)  # 计算成本矩阵
+        K = torch.exp(-Wxy / epsilon)  # 计算内核矩阵
+        P = self.sinkhorn_normalized(K, n_iters)  # 计算 Sinkhorn 迭代的结果
+        return torch.sum(P * Wxy)  # 计算近似 EMD 损失
+    def forward(self, y_s, y_t, mode="classification"):
+        batch_size = y_s.size(0)
+        p_s = F.softmax(y_s, dim=-1)
+        p_t = F.softmax(y_t, dim=-1)
+        
+        emd_loss = 0.0
+        for i in range(batch_size):
+            emd_loss += self.sinkhorn_loss(x=p_s[i:i+1],y=p_t[i:i+1]) 
+        return 0.001 * emd_loss 
 
 # 1-step IG for multi-classification task
 class saliency_mse_for_multiclass(nn.Module):
