@@ -7,7 +7,7 @@ python3 main_glue_distill.py \
     --student_path $STUDENT_PATH \
     --per_gpu_batch_size 16 \
     --num_train_epochs 10 \
-    --learning_rate 4e-6 \
+    --learning_rate 4e-5 \
     --alpha 0.8 \
     --temperature 3.0 \
     --beta 0.8
