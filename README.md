@@ -1,4 +1,4 @@
-# Sinkhorn Distance Minimization for Knowledge Distillation
+# Sinkhorn Distance Minimization for Knowledge Distillation (COLING 2024)
 ## Installation
 To install the environment, run:
 
