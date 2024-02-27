@@ -46,3 +46,7 @@ To perform **Task-specific Student Model Distillation**, run:
 ## Student Checkpoints
 The distilled student model for each task reported in the paper can be downloaded using the following link:
 https://drive.google.com/drive/folders/1BsA0VHKSa_-Bp5I7dQ2Ftk2q7cIyPrdC
+
+## Teacher Checkpoints
+The teacher model for each task reported in the paper can be downloaded using the following link:
+
