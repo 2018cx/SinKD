@@ -50,3 +50,13 @@ https://drive.google.com/drive/folders/1BsA0VHKSa_-Bp5I7dQ2Ftk2q7cIyPrdC
 ## Teacher Checkpoints
 The teacher model for each task reported in the paper can be downloaded using the following link:
 
+## BibTeX
+```
+@article{cui2024sinkhorn,
+  title={Sinkhorn Distance Minimization for Knowledge Distillation},
+  author={Cui, Xiao and Qin, Yulei and Gao, Yuting and Zhang, Enwei and Xu, Zihan and Wu, Tong and Li, Ke and Sun, Xing and Zhou, Wengang and Li, Houqiang},
+  journal={arXiv preprint arXiv:2402.17110},
+  year={2024}
+}
+```
+
