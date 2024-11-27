@@ -1,4 +1,4 @@
-# Sinkhorn Distance Minimization for Knowledge Distillation (COLING 2024)
+# Sinkhorn Distance Minimization for Knowledge Distillation (COLING 2024 and TNNLS 2024)
 ## Installation
 To install the environment, run:
 
@@ -58,6 +58,20 @@ https://drive.google.com/file/d/1sBi35Dk8VJ7TU0warB6BL9QKx-in9Ww6/view?usp=drive
   author={Cui, Xiao and Qin, Yulei and Gao, Yuting and Zhang, Enwei and Xu, Zihan and Wu, Tong and Li, Ke and Sun, Xing and Zhou, Wengang and Li, Houqiang},
   journal={arXiv preprint arXiv:2402.17110},
   year={2024}
+}
+
+@article{cui:hal-04803835,
+  TITLE = {{SinKD: Sinkhorn Distance Minimization for Knowledge Distillation}},
+  AUTHOR = {Cui, Xiao and Qin, Yulei and Gao, Yuting and Zhang, Enwei and Xu, Zihan and Wu, Tong and Li, Ke and Sun, Xing and Zhou, Wengang and Li, Houqiang},
+  URL = {https://hal.science/hal-04803835},
+  JOURNAL = {{IEEE Transactions on Neural Networks and Learning Systems}},
+  PUBLISHER = {{IEEE}},
+  YEAR = {2024},
+  MONTH = Nov,
+  KEYWORDS = {Large Language Model ; Knowledge Distillation ; Wasserstein Distance ; Sinkhorn Distance},
+  PDF = {https://hal.science/hal-04803835v1/file/TNNLS-preview.pdf},
+  HAL_ID = {hal-04803835},
+  HAL_VERSION = {v1},
 }
 ```
 
