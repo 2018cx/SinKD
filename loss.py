@@ -138,32 +138,6 @@ class Sinkhorn(nn.Module):
         emd_loss = 0.001*self.sinkhorn_loss(x=p_s,y=p_t)
         return emd_loss
 
-
-class Sinkhorn_sample(nn.Module):
-    def __init__(self, T):
-        super(Sinkhorn_sample, self).__init__()
-        self.T = 2 
-    def sinkhorn_normalized(self,x, n_iters=10):
-        for _ in range(n_iters):
-            x = x / torch.sum(x, dim=1, keepdim=True)
-            x = x / torch.sum(x, dim=0, keepdim=True)
-        return x
-
-    def sinkhorn_loss(self,x, y, epsilon=0.1, n_iters=20):
-        Wxy = torch.cdist(x, y, p=1)  # 计算成本矩阵
-        K = torch.exp(-Wxy / epsilon)  # 计算内核矩阵
-        P = self.sinkhorn_normalized(K, n_iters)  # 计算 Sinkhorn 迭代的结果
-        return torch.sum(P * Wxy)  # 计算近似 EMD 损失
-    def forward(self, y_s, y_t, mode="classification"):
-        batch_size = y_s.size(0)
-        p_s = F.softmax(y_s, dim=-1)
-        p_t = F.softmax(y_t, dim=-1)
-        
-        emd_loss = 0.0
-        for i in range(batch_size):
-            emd_loss += self.sinkhorn_loss(x=p_s[i:i+1],y=p_t[i:i+1]) 
-        return 0.001 * emd_loss 
-
 # 1-step IG for multi-classification task
 class saliency_mse_for_multiclass(nn.Module):
     def __init__(self, top_k, norm, loss_func):
